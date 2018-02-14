@@ -187,7 +187,7 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 10
       - name: keycloak-proxy
-        image: quay.io/gambol99/keycloak-proxy:v2.1.0-rc5
+        image: quay.io/gambol99/keycloak-proxy:v2.1.1
         imagePullPolicy: Always
         envFrom:
         - secretRef:
