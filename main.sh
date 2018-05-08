@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "${SEC_RULE_ENGINE}" != "" ]; then
   sed -i".bak" "s/SecRuleEngine On/SecRuleEngine ${SEC_RULE_ENGINE}/" /etc/httpd/modsecurity.d/modsecurity.conf
@@ -45,4 +45,4 @@ sed -i".bak" "s,CustomLog \"logs/access_log\" combined,CustomLog \"/dev/stdout\"
 sed -i".bak" "s,ErrorLog \"logs/error_log\",ErrorLog \"/dev/stderr\"," /etc/httpd/conf/httpd.conf
 
 echo "Starting httpd"
-httpd -D FOREGROUND
+exec httpd -D FOREGROUND
