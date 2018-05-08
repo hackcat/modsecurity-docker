@@ -148,7 +148,7 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
 - **SEC_PRCE_MATCH_LIMIT_RECURSION** = 500000  
   you may want adjust this to fight PRCE Limit errors.  
   The PCRE Match limit is meant to reduce the chance for a DoS attack via Regular Expressions.
-  So by raising the limit you raise your vulnerability in this regard, 
+  So by raising the limit you raise your vulnerability in this regard,
   but the PCRE errors are much worse from a security perspective.
 - **SEC_RULE_BEFORE_<FREE_TEXT_HERE>**  
   see above

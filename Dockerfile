@@ -35,11 +35,11 @@ ENV PARANOIA=3
 ENV SEC_RULE_ENGINE=On
 
 # https://github.com/SpiderLabs/owasp-modsecurity-crs/issues/656
-# The default values for the PCRE Match limit are very, very low with ModSecurity. 
+# The default values for the PCRE Match limit are very, very low with ModSecurity.
 # You can got to 500K usually without harming your set.
-# But for your information: 
-# The PCRE Match limit is meant to reduce the chance for a DoS attack via 
-# Regular Expressions. So by raising the limit you raise your vulnerability in this regard, 
+# But for your information:
+# The PCRE Match limit is meant to reduce the chance for a DoS attack via
+# Regular Expressions. So by raising the limit you raise your vulnerability in this regard,
 # but the PCRE errors are much worse from a security perspective. I run with 500K in prod usually.
 ENV SEC_PRCE_MATCH_LIMIT=500000
 ENV SEC_PRCE_MATCH_LIMIT_RECURSION=500000
