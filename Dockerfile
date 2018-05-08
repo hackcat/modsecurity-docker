@@ -47,6 +47,8 @@ ENV SEC_PRCE_MATCH_LIMIT_RECURSION=500000
 # Keycloak proxy most probably in our case, hence port 3000
 ENV PROXY_UPSTREAM_HOST=localhost:3000
 
+ENV PROXY_HEADER_X_FRAME_OPTIONS="Header always append X-Frame-Options SAMEORIGIN"
+
 COPY main.sh /main.sh
 
 COPY proxy.conf /etc/httpd/conf.d/proxy.conf

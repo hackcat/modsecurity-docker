@@ -20,6 +20,11 @@ if [ "${PROXY_UPSTREAM_HOST}" != "" ]; then
   echo "Upstream host set to '${PROXY_UPSTREAM_HOST}'"
 fi
 
+if [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "" ]; then
+  sed -i".bak" "s/^Header always append X-Frame-Options SAMEORIGIN$/${PROXY_HEADER_X_FRAME_OPTIONS}/g" /etc/httpd/conf.d/proxy.conf
+  echo "X-Frame-Options set to '${PROXY_HEADER_X_FRAME_OPTIONS}'"
+fi
+
 names=`env | grep SEC_RULE_BEFORE_ | sed 's/=.*//'`
 if [ "$names" != "" ]; then
   while read name; do
