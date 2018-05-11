@@ -20,9 +20,12 @@ if [ "${PROXY_UPSTREAM_HOST}" != "" ]; then
   echo "Upstream host set to '${PROXY_UPSTREAM_HOST}'"
 fi
 
-if [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "" ]; then
-  sed -i".bak" "s/^Header always append X-Frame-Options SAMEORIGIN$/${PROXY_HEADER_X_FRAME_OPTIONS}/g" /etc/httpd/conf.d/proxy.conf
+if [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "OFF" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "No" ]; then
+  sed -i".bak" "s,^Header always append X-Frame-Options SAMEORIGIN$,Header always append X-Frame-Options ${PROXY_HEADER_X_FRAME_OPTIONS},g" /etc/httpd/conf.d/proxy.conf
   echo "X-Frame-Options set to '${PROXY_HEADER_X_FRAME_OPTIONS}'"
+else
+  sed -i".bak" "s/^Header always append X-Frame-Options SAMEORIGIN$//g" /etc/httpd/conf.d/proxy.conf
+  echo "X-Frame-Options disabled"
 fi
 
 names=`env | grep SEC_RULE_BEFORE_ | sed 's/=.*//'`

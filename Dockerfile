@@ -47,7 +47,10 @@ ENV SEC_PRCE_MATCH_LIMIT_RECURSION=500000
 # Keycloak proxy most probably in our case, hence port 3000
 ENV PROXY_UPSTREAM_HOST=localhost:3000
 
-ENV PROXY_HEADER_X_FRAME_OPTIONS="Header always append X-Frame-Options SAMEORIGIN"
+# Avoid clickjacking attacks, by ensuring that content is not embedded into other sites.
+# Possible values: DENY, SAMEORIGIN, ALLOW-FROM https://example.com/
+# To remove the directive from config file please use: "OFF", "No" or an empty string
+ENV PROXY_HEADER_X_FRAME_OPTIONS="SAMEORIGIN"
 
 COPY main.sh /main.sh
 
