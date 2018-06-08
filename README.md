@@ -137,12 +137,13 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
 
 ## Full list of env vars
 
-- **PROXY_UPSTREAM_HOST** = localhost:3000  
-  Target to forward incoming traffic to, use your service name there; default value plays nicely with keycloak-proxy behind
-- **PROXY_HEADER_X_FRAME_OPTIONS** = Header always append X-Frame-Options SAMEORIGIN  
-  Defaults to safe frame handling, [can be adjusted](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) if needed
 - **PARANOIA** = 3  
   see above
+- **PROXY_UPSTREAM_HOST** = localhost:3000  
+  Target to forward incoming traffic to, use your service name there; default value plays nicely with keycloak-proxy behind
+- **PROXY_HEADER_X_FRAME_OPTIONS** = SAMEORIGIN  
+  Defaults to safe frame handling, [can be adjusted](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) if needed  
+  Disable X-Frame-Options header with empty value, OFF or No
 - **SEC_RULE_ENGINE** = On  
   Possible values: On / Off / DetectionOnly
 - **SEC_PRCE_MATCH_LIMIT** = 500000  
