@@ -28,7 +28,7 @@ if [ "${PROXY_UPSTREAM_HOST}" != "" ]; then
 fi
 
 if [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "OFF" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "No" ]; then
-  sed -i "s,add_header X-Frame-Options SAMEORIGIN;$,add_header X-Frame-Options ${PROXY_HEADER_X_FRAME_OPTIONS},g" /etc/nginx/nginx.conf
+  sed -i "s,add_header X-Frame-Options SAMEORIGIN;$,add_header X-Frame-Options ${PROXY_HEADER_X_FRAME_OPTIONS};,g" /etc/nginx/nginx.conf
   echo "X-Frame-Options set to '${PROXY_HEADER_X_FRAME_OPTIONS}'"
 else
   sed -i "s/add_header X-Frame-Options SAMEORIGIN;$//g" /etc/nginx/nginx.conf
