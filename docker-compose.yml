@@ -4,10 +4,9 @@ services:
     build: "."
     environment:
       - PROXY_UPSTREAM_HOST=site:80
-      - PROXY_HEADER_X_FRAME_OPTIONS="ALLOW-FROM https://example.com/"
     ports:
       - "8080:80"
   site:
     image: "nginx"
     ports:
-      - "80"
+      - "8181:80"
