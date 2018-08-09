@@ -4,6 +4,7 @@ services:
     build: "."
     environment:
       - PROXY_UPSTREAM_HOST=site:80
+      - PARANOIA=1
     ports:
       - "8080:80"
   site:

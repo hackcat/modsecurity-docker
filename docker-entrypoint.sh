@@ -52,5 +52,4 @@ if [ "$names" != "" ]; then
 fi
 
 cat /etc/nginx/nginx.conf
-
 exec "$@"
