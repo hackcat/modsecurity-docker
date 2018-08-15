@@ -18,6 +18,8 @@ RUN cd /opt && \
   # 3.0.2
   git checkout e4e0497be4d598cce0e0a8fef20d1f1e5578c8d0
 
+SHELL ["/bin/bash", "-c"]
+
 RUN cd /opt && \
   cp -R /opt/owasp-modsecurity-crs/ /etc/nginx/modsecurity.d/owasp-crs/ && \
   mv /etc/nginx/modsecurity.d/owasp-crs/crs-setup.conf.example /etc/nginx/modsecurity.d/owasp-crs/crs-setup.conf && \
