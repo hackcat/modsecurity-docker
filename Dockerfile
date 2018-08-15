@@ -24,15 +24,17 @@ RUN cd /opt && \
   mv /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf && \
   mv /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf && \
   cd /etc/nginx/modsecurity.d && \
-  printf "\ninclude owasp-crs/crs-setup.conf\ninclude owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf\ninclude owasp-crs/rules/REQUEST-901-INITIALIZATION.conf\ninclude owasp-crs/rules/REQUEST-905-COMMON-EXCEPTIONS.conf\ninclude owasp-crs/rules/REQUEST-910-IP-REPUTATION.conf\ninclude owasp-crs/rules/REQUEST-911-METHOD-ENFORCEMENT.conf\ninclude owasp-crs/rules/REQUEST-912-DOS-PROTECTION.conf\ninclude owasp-crs/rules/REQUEST-913-SCANNER-DETECTION.conf\ninclude owasp-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf\ninclude owasp-crs/rules/REQUEST-921-PROTOCOL-ATTACK.conf\ninclude owasp-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf\ninclude owasp-crs/rules/REQUEST-931-APPLICATION-ATTACK-RFI.conf\ninclude owasp-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf\ninclude owasp-crs/rules/REQUEST-933-APPLICATION-ATTACK-PHP.conf\ninclude owasp-crs/rules/REQUEST-941-APPLICATION-ATTACK-XSS.conf\ninclude owasp-crs/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf\ninclude owasp-crs/rules/REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION.conf\ninclude owasp-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf\ninclude owasp-crs/rules/RESPONSE-950-DATA-LEAKAGES.conf\ninclude owasp-crs/rules/RESPONSE-951-DATA-LEAKAGES-SQL.conf\ninclude owasp-crs/rules/RESPONSE-952-DATA-LEAKAGES-JAVA.conf\ninclude owasp-crs/rules/RESPONSE-953-DATA-LEAKAGES-PHP.conf\ninclude owasp-crs/rules/RESPONSE-954-DATA-LEAKAGES-IIS.conf\ninclude owasp-crs/rules/RESPONSE-959-BLOCKING-EVALUATION.conf\ninclude owasp-crs/rules/RESPONSE-980-CORRELATION.conf\ninclude owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf" >> include.conf && \
-  sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/modsecurity.d/modsecurity.conf
+  printf "\ninclude owasp-crs/crs-setup.conf\n" >> include.conf && \
+  sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/modsecurity.d/modsecurity.conf && \
+  # REQUEST-903 is Drupal and Wordpress specific
+  for i in `ls -v owasp-crs/rules/*.conf`; do if [[ $i != *"REQUEST-903"* ]]; then printf "include $i\n" >> include.conf; fi done;
 
 COPY cleanup.sh /
 RUN chmod u+x /cleanup.sh
 RUN /cleanup.sh
-COPY docker-entrypoint.sh /
+COPY main.sh /
 COPY nginx.conf /etc/nginx/
-RUN chmod u+x /docker-entrypoint.sh
+RUN chmod u+x /main.sh
 # Logs to stdout/stderr
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
   ln -sf /dev/stderr /var/log/nginx/error.log && \
@@ -86,5 +88,5 @@ ENV PROXY_HEADER_X_FRAME_OPTIONS=SAMEORIGIN
 
 EXPOSE 80
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/main.sh"]
 CMD /usr/local/nginx/nginx -g "daemon off;"
