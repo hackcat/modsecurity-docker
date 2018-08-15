@@ -48,5 +48,5 @@ fi
 echo "RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf"
 cat /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 
-echo "Starting httpd"
+echo "Starting nginx"
 exec "$@"
