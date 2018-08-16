@@ -34,7 +34,3 @@ rm -rf /usr/local/modsecurity/include
 rm -rf /usr/local/modsecurity/lib/libmodsecurity.a
 
 rm -rf /root/.cache
-
-rm -rf /opt/owasp-modsecurity-crs/
-rm -rf /etc/nginx/modsecurity.d/owasp-crs/.git
-rm -rf /etc/nginx/modsecurity.d/owasp-crs/util/regression-tests

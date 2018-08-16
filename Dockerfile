@@ -12,35 +12,43 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get -y install python git ca-certificates
 
-RUN cd /opt && \
-  git clone -b v3.0/master --single-branch https://github.com/SpiderLabs/owasp-modsecurity-crs && \
-  cd owasp-modsecurity-crs && \
-  # 3.0.2
-  git checkout e4e0497be4d598cce0e0a8fef20d1f1e5578c8d0
+WORKDIR /etc/nginx/modsecurity.d
 
+# Checking out by git sha to get version 3.0.2 of CRS
+# See https://github.com/SpiderLabs/owasp-modsecurity-crs/releases/tag/v3.0.2
+RUN \
+  git clone -b v3.0/master --single-branch https://github.com/SpiderLabs/owasp-modsecurity-crs owasp-crs && \
+  cd owasp-crs && \
+  git checkout e4e0497be4d598cce0e0a8fef20d1f1e5578c8d0 && \
+  rm -rf .git util/regression-tests
+
+RUN \
+  mv owasp-crs/crs-setup.conf.example owasp-crs/crs-setup.conf && \
+  mv owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf && \
+  mv owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+
+# Need this to make for loop work correctly in the next RUN block
 SHELL ["/bin/bash", "-c"]
 
-RUN cd /opt && \
-  cp -R /opt/owasp-modsecurity-crs/ /etc/nginx/modsecurity.d/owasp-crs/ && \
-  mv /etc/nginx/modsecurity.d/owasp-crs/crs-setup.conf.example /etc/nginx/modsecurity.d/owasp-crs/crs-setup.conf && \
-  mv /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf && \
-  mv /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf && \
-  cd /etc/nginx/modsecurity.d && \
+# REQUEST-903 is Drupal and Wordpress specific
+RUN \
+  sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' modsecurity.conf && \
   printf "\ninclude owasp-crs/crs-setup.conf\n" >> include.conf && \
-  sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/modsecurity.d/modsecurity.conf && \
-  # REQUEST-903 is Drupal and Wordpress specific
   for i in `ls -v owasp-crs/rules/*.conf`; do if [[ $i != *"REQUEST-903"* ]]; then printf "include $i\n" >> include.conf; fi done;
 
-COPY cleanup.sh /
-RUN chmod u+x /cleanup.sh
-RUN /cleanup.sh
-COPY main.sh /
+COPY *.sh /
+RUN chmod u+x /*.sh
+
 COPY nginx.conf /etc/nginx/
-RUN chmod u+x /main.sh
+
 # Logs to stdout/stderr
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
   ln -sf /dev/stderr /var/log/nginx/error.log && \
   ln -sf /dev/stdout /var/log/modsec_audit.log
+
+RUN /cleanup.sh && rm -f /cleanup.sh
+
+# ----------------------------------------------------------------------------
 
 # https://github.com/SpiderLabs/owasp-modsecurity-crs/blob/v3.0/master/crs-setup.conf.example#L130
 # - A paranoia level of 1 is default. In this level, most core rules
@@ -67,7 +75,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 #   treated before the site can go productive.
 ENV PARANOIA=3
 
-# Possible values: On / Off /DetectionOnly
+# Possible values: On, Off, DetectionOnly
 ENV SEC_RULE_ENGINE=On
 
 # https://github.com/SpiderLabs/owasp-modsecurity-crs/issues/656
@@ -85,7 +93,7 @@ ENV PROXY_UPSTREAM_HOST=localhost:3000
 
 # Avoid clickjacking attacks, by ensuring that content is not embedded into other sites.
 # Possible values: DENY, SAMEORIGIN, ALLOW-FROM https://example.com/
-# To remove the directive from config file please use: "OFF", "No" or an empty string
+# Remove this header with values: Off, No or an empty string
 ENV PROXY_HEADER_X_FRAME_OPTIONS=SAMEORIGIN
 
 EXPOSE 80
