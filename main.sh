@@ -44,9 +44,9 @@ if [ "$names" != "" ]; then
     eval value='$'"${name}"
     echo "${value}" >> /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
   done <<< "$names"
+  echo "REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf"
+  cat /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 fi
-echo "REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf"
-cat /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 
 names=`env | grep SEC_RULE_AFTER_ | sed 's/=.*//'`
 if [ "$names" != "" ]; then
@@ -54,9 +54,9 @@ if [ "$names" != "" ]; then
     eval value='$'"${name}"
     echo "${value}" >> /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
   done <<< "$names"
+  echo "RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf"
+  cat /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 fi
-echo "RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf"
-cat /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 
 echo "Starting nginx"
 exec "$@"
