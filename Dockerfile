@@ -1,8 +1,8 @@
 # See following page to find out CRS version
 # https://github.com/SpiderLabs/owasp-modsecurity-crs/blob/v3.0/master/CHANGES
 #
-# docker build -t fareoffice/modsecurity:<CRS-VERSION> .
-# docker push fareoffice/modsecurity:<CRS-VERSION>
+# docker build -t fareoffice/modsecurity:v3-nginx-crs-<CRS-VERSION> .
+# docker push fareoffice/modsecurity:v3-nginx-crs-<CRS-VERSION>
 
 FROM owasp/modsecurity:v3-ubuntu-nginx
 
