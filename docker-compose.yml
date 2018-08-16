@@ -12,3 +12,5 @@ services:
     image: "nginx"
     ports:
       - "8181:80"
+    volumes:
+    - ./data:/usr/share/nginx/html
