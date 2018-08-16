@@ -1,6 +1,7 @@
 # WAF based on ModSecurity
 
-Please use "3.0.2" tag on "fareoffice/modsecurity" image: "fareoffice/modsecurity:3.0.2"  
+Please use "v3-nginx-crs-3.0.2" tag on "fareoffice/modsecurity" image: "fareoffice/modsecurity:v3-nginx-crs-3.0.2"
+This contains modsecurity v3 and Core Rule Set (CRS) 3.0.2 and runs on Nginx.
 We shall keep image versioned according to version of Core Rule Set (CRS) it includes.
 
 ## Bootstrap
@@ -8,14 +9,14 @@ We shall keep image versioned according to version of Core Rule Set (CRS) it inc
 In your `deploy.yaml` add following
 
 ```
-apiVersion: v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: security
 spec:
   replicas: 1
   strategy:
-    type: Rolling
+    type: Recreate
   template:
     metadata:
       labels:
@@ -23,7 +24,7 @@ spec:
     spec:
       containers:
       - name: modsecurity-proxy
-        image: fareoffice/modsecurity:3.0.2
+        image: fareoffice/modsecurity:v3-nginx-crs-3.0.2
         imagePullPolicy: Always
         env:
         - name: PROXY_UPSTREAM_HOST
@@ -51,23 +52,17 @@ spec:
 
 Adjust **PROXY_UPSTREAM_HOST** env var accordingly, it shall point to your service.
 
-Make sure **Route** points to "security-service", not to "my-service"
+Make sure **Ingress** points to "security-service", not to "my-service"
 
 ```
 apiVersion: v1
-kind: Route
+kind: Ingress
 metadata:
-  name: my-route
-  labels:
-    router: external
+  name: my-ingress
 spec:
-  host: ${NAMESPACE}-${CLUSTER}.fareonline.net
-  to:
-    kind: Service
-    name: security-service
-  tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
+  backend:
+    serviceName: security
+    servicePort: 80
 ```
 
 ## Understand Paranoia levels
@@ -162,14 +157,14 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
 
 Example
 ```
-apiVersion: v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: security
 spec:
   replicas: 1
   strategy:
-    type: Rolling
+    type: Recreate
   template:
     metadata:
       labels:
@@ -177,7 +172,7 @@ spec:
     spec:
       containers:
       - name: modsecurity-proxy
-        image: fareoffice/modsecurity:3.0.2
+        image: fareoffice/modsecurity:v3-nginx-crs-3.0.2
         imagePullPolicy: Always
         env:
         - name: SEC_RULE_AFTER_DISABLE_COOKIE_KC_ACCESS # this cookie is safe but so big and has special chars, so drives modsec nuts
@@ -220,20 +215,13 @@ spec:
 ---
 
 apiVersion: v1
-kind: Route
+kind: Ingress
 metadata:
-  name: app-route
-  labels:
-    router: external
+  name: app-ingress
 spec:
-  host: ${NAMESPACE}-${CLUSTER}.fareonline.net
-  to:
-    kind: Service
-    name: security-service
-  tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
-
+  backend:
+    serviceName: security-service
+    servicePort: 80
 ---
 
 apiVersion: v1
