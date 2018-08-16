@@ -1,7 +1,7 @@
 # WAF based on ModSecurity
 
-Please use "v3-nginx-crs-3.0.2" tag on "fareoffice/modsecurity" image: "fareoffice/modsecurity:v3-nginx-crs-3.0.2"
-This contains modsecurity v3 and Core Rule Set (CRS) 3.0.2 and runs on Nginx.
+Please use "v3-nginx-crs-3.0.2" tag on "fareoffice/modsecurity" image: `fareoffice/modsecurity:v3-nginx-crs-3.0.2`  
+This contains modsecurity v3 and Core Rule Set (CRS) 3.0.2 and runs on Nginx.  
 We shall keep image versioned according to version of Core Rule Set (CRS) it includes.
 
 ## Bootstrap
@@ -61,7 +61,7 @@ metadata:
   name: my-ingress
 spec:
   backend:
-    serviceName: security
+    serviceName: security-service
     servicePort: 80
 ```
 
