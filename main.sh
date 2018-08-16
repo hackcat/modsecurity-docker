@@ -1,5 +1,15 @@
 #!/bin/bash
 
+set -e
+
+if [ -z "$CRS_PATH" ]; then
+    echo "Please set CRS_PATH env variable."
+    exit 1
+fi
+python -c "import re;import os;out=re.sub('(#SecAction[\S\s]*id:900000[\s\S]*paranoia_level=1\")','SecAction \\\\\n  \"id:900000, \\\\\n   phase:1, \\\\\n   nolog, \\\\\n   pass, \\\\\n   t:none, \\\\\n   setvar:tx.paranoia_level='+os.environ['PARANOIA']+'\"',open(os.environ['CRS_PATH']+'/crs-setup.conf','r').read());open(os.environ['CRS_PATH']+'/crs-setup.conf','w').write(out)"
+python -c "import re;import os;out=re.sub('(#SecAction[\S\s]*id:900330[\s\S]*total_arg_length=64000\")','SecAction \\\\\n \"id:900330, \\\\\n phase:1, \\\\\n nolog, \\\\\n pass, \\\\\n t:none, \\\\\n setvar:tx.total_arg_length=64000\"',open(os.environ['CRS_PATH']+'/crs-setup.conf','r').read());open(os.environ['CRS_PATH']+'/crs-setup.conf','w').write(out)"
+echo "PARANOIA set to '${PARANOIA}'"
+
 if [ "${SEC_RULE_ENGINE}" != "" ]; then
   sed -i".bak" "s/SecRuleEngine On/SecRuleEngine ${SEC_RULE_ENGINE}/" /etc/nginx/modsecurity.d/modsecurity.conf
   echo "SecRuleEngine set to '${SEC_RULE_ENGINE}'"
