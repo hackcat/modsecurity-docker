@@ -4,10 +4,13 @@ services:
     build: "."
     environment:
       - PROXY_UPSTREAM_HOST=site:80
-      - PROXY_HEADER_X_FRAME_OPTIONS="ALLOW-FROM https://example.com/"
+      - PARANOIA=1
+      - SEC_RULE_AFTER_FOO=SecRuleRemoveById 920420
     ports:
       - "8080:80"
   site:
     image: "nginx"
     ports:
-      - "80"
+      - "8181:80"
+    volumes:
+    - ./data:/usr/share/nginx/html
