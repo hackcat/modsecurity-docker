@@ -38,6 +38,7 @@ else
   echo "X-Frame-Options disabled"
 fi
 
+echo "" > /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 names=`env | grep SEC_RULE_BEFORE_ | sed 's/=.*//'`
 if [ "$names" != "" ]; then
   while read name; do
@@ -48,6 +49,7 @@ if [ "$names" != "" ]; then
   cat /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 fi
 
+echo "" > /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 names=`env | grep SEC_RULE_AFTER_ | sed 's/=.*//'`
 if [ "$names" != "" ]; then
   while read name; do
