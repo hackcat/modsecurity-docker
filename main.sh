@@ -30,6 +30,11 @@ if [ "${PROXY_UPSTREAM_HOST}" != "" ]; then
   echo "Upstream host set to '${PROXY_UPSTREAM_HOST}'"
 fi
 
+if [ "${CLIENT_MAX_BODY_SIZE}" != "" ]; then
+  sed -i "s/client_max_body_size 2M/client_max_body_size ${CLIENT_MAX_BODY_SIZE}/g" /etc/nginx/nginx.conf
+  echo "client_max_body_size set to '${CLIENT_MAX_BODY_SIZE}'"
+fi
+
 if [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "Off" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "OFF" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "No" ] && [ "${PROXY_HEADER_X_FRAME_OPTIONS}" != "NO" ]; then
   sed -i "s,add_header X-Frame-Options SAMEORIGIN;$,add_header X-Frame-Options ${PROXY_HEADER_X_FRAME_OPTIONS};,g" /etc/nginx/nginx.conf
   echo "X-Frame-Options set to '${PROXY_HEADER_X_FRAME_OPTIONS}'"
