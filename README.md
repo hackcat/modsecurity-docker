@@ -132,12 +132,12 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
 
 ## Full list of env vars
 
+- **CLIENT_MAX_BODY_SIZE** = 1m  
+  Allow to configure [client_max_body_size](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size) if client intends to send larger body than 1M (which would result in HTTP 413)
 - **PARANOIA** = 3  
   see above
 - **PROXY_UPSTREAM_HOST** = localhost:3000  
   Target to forward incoming traffic to, use your service name there; default value plays nicely with keycloak-proxy behind
-- **CLIENT_MAX_BODY_SIZE** = 2M  
-  Allow to configure client_max_body_size if client intends to send larger body than 2M (which would result in HTTP 413)
 - **PROXY_HEADER_X_FRAME_OPTIONS** = SAMEORIGIN  
   Defaults to safe frame handling, [can be adjusted](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) if needed  
   Disable X-Frame-Options header with empty value, OFF or No
