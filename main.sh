@@ -31,7 +31,7 @@ if [ "${PROXY_UPSTREAM_HOST}" != "" ]; then
 fi
 
 if [ "${CLIENT_MAX_BODY_SIZE}" != "" ]; then
-  sed -i "s/client_max_body_size 2M/client_max_body_size ${CLIENT_MAX_BODY_SIZE}/g" /etc/nginx/nginx.conf
+  sed -i "s/client_max_body_size 1m/client_max_body_size ${CLIENT_MAX_BODY_SIZE}/g" /etc/nginx/nginx.conf
   echo "client_max_body_size set to '${CLIENT_MAX_BODY_SIZE}'"
 fi
 

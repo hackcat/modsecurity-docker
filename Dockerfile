@@ -92,7 +92,7 @@ ENV SEC_PRCE_MATCH_LIMIT_RECURSION=500000
 ENV PROXY_UPSTREAM_HOST=localhost:3000
 
 # Allow to congifure client_max_body_size to avoid a HTTP 413
-ENV CLIENT_MAX_BODY_SIZE=2M
+ENV CLIENT_MAX_BODY_SIZE=1m
 
 # Avoid clickjacking attacks, by ensuring that content is not embedded into other sites.
 # Possible values: DENY, SAMEORIGIN, ALLOW-FROM https://example.com/
