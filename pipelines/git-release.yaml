@@ -1,0 +1,10 @@
+kind: pipeline
+jenkins: apps
+branch: ^master$
+parameters:
+  INCREMENT: ["patch", "minor", "major"]
+pipeline:
+  extensions:
+    githubRelease:
+      channel: sites-releases
+      image: fareoffice/modsecurity:v3-nginx-crs-3.0.2-${GIT_COMMIT}
