@@ -11,17 +11,17 @@ python -c "import re;import os;out=re.sub('(#SecAction[\S\s]*id:900330[\s\S]*tot
 echo "PARANOIA set to '${PARANOIA}'"
 
 if [ "${SEC_RULE_ENGINE}" != "" ]; then
-  sed -i".bak" "s/SecRuleEngine On/SecRuleEngine ${SEC_RULE_ENGINE}/" /etc/nginx/modsecurity.d/modsecurity.conf
+  sed -i".bak" "s/SecRuleEngine On/SecRuleEngine ${SEC_RULE_ENGINE}/" /etc/modsecurity.d/modsecurity.conf
   echo "SecRuleEngine set to '${SEC_RULE_ENGINE}'"
 fi
 
 if [ "${SEC_PRCE_MATCH_LIMIT}" != "" ]; then
-  sed -i".bak" "s/SecPcreMatchLimit 1000/SecPcreMatchLimit ${SEC_PRCE_MATCH_LIMIT}/" /etc/nginx/modsecurity.d/modsecurity.conf
+  sed -i".bak" "s/SecPcreMatchLimit 1000/SecPcreMatchLimit ${SEC_PRCE_MATCH_LIMIT}/" /etc/modsecurity.d/modsecurity.conf
   echo "SecPcreMatchLimit set to '${SEC_PRCE_MATCH_LIMIT}'"
 fi
 
 if [ "${SEC_PRCE_MATCH_LIMIT_RECURSION}" != "" ]; then
-  sed -i".bak" "s/SecPcreMatchLimitRecursion 1000/SecPcreMatchLimitRecursion ${SEC_PRCE_MATCH_LIMIT_RECURSION}/" /etc/nginx/modsecurity.d/modsecurity.conf
+  sed -i".bak" "s/SecPcreMatchLimitRecursion 1000/SecPcreMatchLimitRecursion ${SEC_PRCE_MATCH_LIMIT_RECURSION}/" /etc/modsecurity.d/modsecurity.conf
   echo "SecPcreMatchLimitRecursion set to '${SEC_PRCE_MATCH_LIMIT_RECURSION}'"
 fi
 
@@ -43,26 +43,26 @@ else
   echo "X-Frame-Options disabled"
 fi
 
-echo "" > /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+echo "" > /etc/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 names=`env | grep SEC_RULE_BEFORE_ | sed 's/=.*//'`
 if [ "$names" != "" ]; then
   while read name; do
     eval value='$'"${name}"
-    echo "${value}" >> /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+    echo "${value}" >> /etc/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
   done <<< "$names"
   echo "REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf"
-  cat /etc/nginx/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+  cat /etc/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 fi
 
-echo "" > /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+echo "" > /etc/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 names=`env | grep SEC_RULE_AFTER_ | sed 's/=.*//'`
 if [ "$names" != "" ]; then
   while read name; do
     eval value='$'"${name}"
-    echo "${value}" >> /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+    echo "${value}" >> /etc/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
   done <<< "$names"
   echo "RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf"
-  cat /etc/nginx/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+  cat /etc/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 fi
 
 echo "Starting nginx"
