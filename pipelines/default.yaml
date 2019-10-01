@@ -1,0 +1,16 @@
+kind: pipeline
+branch: ^master$
+jenkins: apps
+triggers:
+  gitpush: true
+pipeline:
+  extensions:
+    github:
+  steps:
+  - docker:
+      build:
+        image: fareoffice/modsecurity:v3-nginx-crs-3.0.2-${GIT_COMMIT}
+      tag:
+      - fareoffice/modsecurity:latest
+      - fareoffice/modsecurity:v3-nginx-crs-3.0.2
+      push: true
