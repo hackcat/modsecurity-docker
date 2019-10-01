@@ -4,15 +4,15 @@
 # docker build -t fareoffice/modsecurity:v3-nginx-crs-<CRS-VERSION> .
 # docker push fareoffice/modsecurity:v3-nginx-crs-<CRS-VERSION>
 
-FROM owasp/modsecurity:v3-ubuntu-nginx
+FROM owasp/modsecurity:3-nginx
 
-ENV CRS_PATH=/etc/nginx/modsecurity.d/owasp-crs
+ENV CRS_PATH=/etc/modsecurity.d/owasp-crs
 
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get -y install python git ca-certificates
 
-WORKDIR /etc/nginx/modsecurity.d
+WORKDIR /etc/modsecurity.d
 
 # Checking out by git sha to get version 3.0.2 of CRS
 # See https://github.com/SpiderLabs/owasp-modsecurity-crs/releases/tag/v3.0.2
@@ -39,12 +39,13 @@ RUN \
 COPY *.sh /
 RUN chmod u+x /*.sh
 
-COPY nginx.conf /etc/nginx/
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Logs to stdout/stderr
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
-  ln -sf /dev/stderr /var/log/nginx/error.log && \
-  ln -sf /dev/stdout /var/log/modsec_audit.log
+# RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
+#   ln -sf /dev/stderr /var/log/nginx/error.log && \
+#   ln -sf /dev/stdout /var/log/modsec_audit.log
+RUN ln -sf /dev/stdout /var/log/modsec_audit.log
 
 RUN /cleanup.sh && rm -f /cleanup.sh
 
@@ -102,4 +103,4 @@ ENV PROXY_HEADER_X_FRAME_OPTIONS=SAMEORIGIN
 EXPOSE 80
 
 ENTRYPOINT ["/main.sh"]
-CMD /usr/local/nginx/nginx -g "daemon off;"
+CMD ["nginx", "-g", "daemon off;"]

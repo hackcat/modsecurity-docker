@@ -7,4 +7,4 @@ pipeline:
   extensions:
     githubRelease:
       channel: infra-releases
-      image: fareoffice/modsecurity:v3-nginx-crs-3.0.2-${GIT_COMMIT}
+      image: fareoffice/modsecurity:3-nginx-${GIT_COMMIT}
