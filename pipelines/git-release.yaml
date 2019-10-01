@@ -6,5 +6,5 @@ parameters:
 pipeline:
   extensions:
     githubRelease:
-      channel: sites-releases
+      channel: infra-releases
       image: fareoffice/modsecurity:v3-nginx-crs-3.0.2-${GIT_COMMIT}
