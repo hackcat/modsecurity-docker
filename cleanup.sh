@@ -25,7 +25,7 @@ apt-get remove -y --purge \
 
 apt-get autoremove -y
 
-rm -Rf /usr/share/man /usr/share/doc
+# rm -Rf /usr/share/man /usr/share/doc
 rm -rf /tmp/* /var/tmp/*
 rm -rf /var/lib/apt/lists/*
 rm -rf /var/cache/apt/archives/*
