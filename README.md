@@ -154,7 +154,8 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
   see above
 - **SEC_RULE_AFTER_<TYPE_ANYTHING_YOU_LIKE_AS_LONG_AS_ITS_UNIQUE>**  
   see above
-
+  **LOG_JSON**
+  Enable json log from ModSecurity
 ## ModSecurity + KeycloakProxy
 
 Example
@@ -179,6 +180,8 @@ spec:
         env:
         - name: SEC_RULE_AFTER_DISABLE_COOKIE_KC_ACCESS # this cookie is safe but so big and has special chars, so drives modsec nuts
           value: "SecRuleUpdateTargetById 900000-999999 !REQUEST_COOKIES:/^kc-access/"
+        - name: LOG_JSON
+          value: true
         ports:
           - containerPort: 80
         livenessProbe:

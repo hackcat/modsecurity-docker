@@ -6,8 +6,9 @@ services:
       - PROXY_UPSTREAM_HOST=site:80
       - PARANOIA=1
       - SEC_RULE_AFTER_FOO=SecRuleRemoveById 920420
+      - LOG_JSON=true
     ports:
-      - "8080:80"
+      - "80:80"
   site:
     image: "nginx"
     ports:

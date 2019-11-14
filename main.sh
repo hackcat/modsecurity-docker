@@ -25,6 +25,13 @@ if [ "${SEC_PRCE_MATCH_LIMIT_RECURSION}" != "" ]; then
   echo "SecPcreMatchLimitRecursion set to '${SEC_PRCE_MATCH_LIMIT_RECURSION}'"
 fi
 
+
+if [ "${LOG_JSON}" != "" ]; then
+  echo "SecAuditLogFormat json" >>  /etc/modsecurity.d/modsecurity.conf
+  echo "Set loggin to json output"
+fi
+
+
 if [ "${PROXY_UPSTREAM_HOST}" != "" ]; then
   sed -i "s/127.0.0.1:3000/${PROXY_UPSTREAM_HOST}/g" /etc/nginx/nginx.conf
   echo "Upstream host set to '${PROXY_UPSTREAM_HOST}'"
