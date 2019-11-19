@@ -25,12 +25,15 @@ if [ "${SEC_PRCE_MATCH_LIMIT_RECURSION}" != "" ]; then
   echo "SecPcreMatchLimitRecursion set to '${SEC_PRCE_MATCH_LIMIT_RECURSION}'"
 fi
 
-
-if [ "${LOG_JSON}" != "" ]; then
-  echo "SecAuditLogFormat json" >>  /etc/modsecurity.d/modsecurity.conf
-  echo "Set loggin to json output"
+if [ "${SEC_AUDIT_LOG_FORMAT}" != "" ]; then
+  echo "SecAuditLogFormat ${SEC_AUDIT_LOG_FORMAT}" >>  /etc/modsecurity.d/modsecurity.conf
+  echo "SecAuditLogFormat set to '${SEC_AUDIT_LOG_FORMAT}'"
 fi
 
+if [ "${SEC_AUDIT_LOG_TYPE}" != "" ]; then
+  echo "SecAuditLogType ${SEC_AUDIT_LOG_TYPE}" >>  /etc/modsecurity.d/modsecurity.conf
+  echo "SecAuditLogType set to '${SEC_AUDIT_LOG_TYPE}'"
+fi
 
 if [ "${PROXY_UPSTREAM_HOST}" != "" ]; then
   sed -i "s/127.0.0.1:3000/${PROXY_UPSTREAM_HOST}/g" /etc/nginx/nginx.conf
