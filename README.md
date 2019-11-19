@@ -154,8 +154,9 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
   see above
 - **SEC_RULE_AFTER_<TYPE_ANYTHING_YOU_LIKE_AS_LONG_AS_ITS_UNIQUE>**  
   see above
-  **LOG_JSON**
-  Enable json log from ModSecurity
+- **LOG_JSON**
+  Log in json format, any non-empty value enables this feature
+
 ## ModSecurity + KeycloakProxy
 
 Example
