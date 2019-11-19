@@ -5,6 +5,7 @@ services:
     environment:
       - PROXY_UPSTREAM_HOST=site:80
       - PARANOIA=1
+      - SEC_RULE_BEFORE_WH=SecRule REQUEST_HEADERS "@rx WhiteHat Security" "id:101,phase:1,t:lowercase,pass"
       - SEC_RULE_AFTER_FOO=SecRuleRemoveById 920420
       - SEC_AUDIT_LOG_FORMAT=JSON
     ports:
