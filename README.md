@@ -135,7 +135,7 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
 - **CLIENT_MAX_BODY_SIZE** = 1m  
   Allow to configure [client_max_body_size](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size) if client intends to send larger body than 1M (which would result in HTTP 413)
 - **PARANOIA** = 3  
-  see above
+  See above
 - **PROXY_UPSTREAM_HOST** = localhost:3000  
   Target to forward incoming traffic to, use your service name there; default value plays nicely with keycloak-proxy behind
 - **PROXY_HEADER_X_FRAME_OPTIONS** = SAMEORIGIN  
@@ -144,16 +144,20 @@ See also https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual
 - **SEC_RULE_ENGINE** = On  
   Possible values: On / Off / DetectionOnly
 - **SEC_PRCE_MATCH_LIMIT** = 500000  
-  you may want adjust this to fight PRCE Limit errors, also see below.
+  You may want adjust this to fight PRCE Limit errors, also see below.
 - **SEC_PRCE_MATCH_LIMIT_RECURSION** = 500000  
-  you may want adjust this to fight PRCE Limit errors.  
+  You may want adjust this to fight PRCE Limit errors.  
   The PCRE Match limit is meant to reduce the chance for a DoS attack via Regular Expressions.
   So by raising the limit you raise your vulnerability in this regard,
   but the PCRE errors are much worse from a security perspective.
 - **SEC_RULE_BEFORE_<FREE_TEXT_HERE>**  
-  see above
+  See above
 - **SEC_RULE_AFTER_<TYPE_ANYTHING_YOU_LIKE_AS_LONG_AS_ITS_UNIQUE>**  
-  see above
+  See above
+- **SEC_AUDIT_LOG_FORMAT**
+  Set this to 'JSON' to log in JSON format
+- **SEC_AUDIT_LOG_TYPE**
+  See https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-(v2.x)#SecAuditLogType
 
 ## ModSecurity + KeycloakProxy
 
@@ -179,6 +183,8 @@ spec:
         env:
         - name: SEC_RULE_AFTER_DISABLE_COOKIE_KC_ACCESS # this cookie is safe but so big and has special chars, so drives modsec nuts
           value: "SecRuleUpdateTargetById 900000-999999 !REQUEST_COOKIES:/^kc-access/"
+        - name: LOG_JSON
+          value: true
         ports:
           - containerPort: 80
         livenessProbe:
